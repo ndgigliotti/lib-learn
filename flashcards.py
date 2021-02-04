@@ -32,14 +32,14 @@ def get_sig(obj):
     return sig
 
 
-def create_deck(obj, skip_special=True, skip_private=True, short=True, shuffle=False):
+def create_deck(obj, allow_special=False, allow_private=False, short=True, shuffle=False):
     cards = OrderedDict()
     functions = inspect.getmembers(obj, inspect.isroutine)
     if shuffle:
         random.shuffle(functions)
     for name, func in functions:
-        if any((skip_special and is_special(func),
-                skip_private and is_private(func),
+        if any((not allow_special and is_special(func),
+                not allow_private and is_private(func),
                 is_deprecated(func))):
             continue
         sig = get_sig(func)
