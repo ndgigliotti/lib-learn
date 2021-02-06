@@ -1,6 +1,4 @@
-import inspect
 import logging
-import pydoc
 import argparse
 import win_unicode_console
 import util
