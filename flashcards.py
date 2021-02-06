@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def _sig_fallback(name, syn, rem, short=True, parent=None):
+    """Look for the signature in the synopsis line."""
     match = re.match(r"([\w\.]+)\((.*)\)", syn)
     if match:
         sig = match[2]
