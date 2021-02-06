@@ -26,12 +26,27 @@ def _sig_fallback(name, syn, rem, short=True, parent=None):
             results = (sig, rem)
         logger.debug("Found signature for %s using fallback.", name)
     else:
-        results = (None, None)
+        if short:
+            results = (None, syn)
+        else:
+            results = (None, "\n".join((syn, rem)))
         logger.debug("Could not find signature for %s.", name)
     return results
 
 
 def get_doc(obj, short=True, parent=None):
+    """
+    Get the signature and docstring of the given object.
+
+    Args:
+        obj (routine): Function, method, methoddescriptor, or builtin.
+        short (:obj:`bool`, optional): Just get the synopsis line. True by default.
+        parent(:obj:`class`, optional): Parent class or module of `obj`. Defaults to None.
+            Only used if signature must be obtained by fallback.
+    Returns:
+        tuple: (signature, docstring)
+
+    """
     doc = pydoc.getdoc(obj)
     syn, rem = pydoc.splitdoc(doc)
     try:
@@ -44,6 +59,28 @@ def get_doc(obj, short=True, parent=None):
 
 
 def create_deck(path, allow_special=False, allow_private=False, short=True, shuffle=False):
+    """
+    Create a "flashcard deck" of the target class or module's routines.
+
+    Constructs an ordered mapping of routine names to docstrings for the target
+    class or module at `path`. Each routine name is complete with the routine's
+    signature.
+
+    Args:
+        obj (str): Dotted path to class or module.
+        allow_special (:obj:`bool`, optional): Allow __special__ routines. False by default.
+        allow_private (:obj:`bool`, optional): Allow _private routines. False by default.
+        short (:obj:`bool`, optional): Just get the synopsis line. True by default.
+        shuffle(:obj:`bool`, optional): Shuffle the deck.
+
+    Returns:
+        OrderedDict: An ordered mapping of routine names to docstrings.
+
+    Raises:
+        TypeError: If `path` resolves to anything other than a class or module.
+        ImportError: If no documentation can be found at `path`.
+
+    """
     cards = OrderedDict()
     obj, _ = pydoc.resolve(path)
     if not (inspect.isclass(obj) or inspect.ismodule(obj)):
