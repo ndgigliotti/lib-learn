@@ -18,13 +18,7 @@ parser.add_argument("-pr", "--private", help="allow private routines", action="s
 parser.add_argument("-sp", "--special", help="allow special routines", action="store_true")
 args = parser.parse_args()
 
-tar_path = args.path
-tar_object, tar_path = pydoc.resolve(tar_path)
-if not (inspect.isclass(tar_object) or inspect.ismodule(tar_object)):
-    raise TypeError("target must be class or module")
-
-
-cards = flashcards.create_deck(tar_object,
+cards = flashcards.create_deck(args.path,
                                allow_private=args.private,
                                allow_special=args.special,
                                short=not args.full,
@@ -32,7 +26,6 @@ cards = flashcards.create_deck(tar_object,
 
 for name in cards:
     print("\n"*3)
-    # prompt2 = describe(f"{tar}.{key}")
     resp = input(name)
     print("-"*len(name))
     print(cards[name])
