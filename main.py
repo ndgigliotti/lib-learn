@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 parser = argparse.ArgumentParser(description="Learn the routines of a class or module.")
 parser.add_argument("path")
 parser.add_argument("-f", "--full", help="show full-length docstrings", action="store_true")
-parser.add_argument("-s", "--shuffle",  help="shuffle the routines", action="store_true")
+parser.add_argument("-s", "--shuffle",  help="shuffle the deck", action="store_true")
 parser.add_argument("-pr", "--private", help="allow private routines", action="store_true")
 parser.add_argument("-sp", "--special", help="allow special routines", action="store_true")
 args = parser.parse_args()
@@ -24,6 +24,6 @@ cards = flashcards.create_deck(args.path,
 
 for name in cards:
     print("\n"*3)
-    resp = input(name)
+    input(name)
     print("-"*len(name))
-    print(cards[name])
+    input(cards[name])
