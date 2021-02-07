@@ -10,7 +10,24 @@ logger = logging.getLogger(__name__)
 
 
 def _sig_fallback(name, syn, rem, short=True, parent=None):
-    """Look for the signature in the synopsis line."""
+    """
+    Look for the signature in the synopsis line.
+
+    Check if the synopsis line is a signature and extract it if so. Ensure that
+    the extracted signature has the `self` parameter if `parent` is a class.
+    Retrieve a new synopsis line from the remaining docstring if appropriate.
+
+    Args:
+        name (str): Name of the signature-owner.
+        syn (str): Synopsis line of the signature-owner's docstring.
+        rem (str): Remainder of the signature-owner's docstring.
+        short (:obj:`bool`, optional): Just get the synopsis line. True by default.
+        parent(:obj:`class`, optional): Parent class or module of the signature-owner.
+            Defaults to None.
+    Returns:
+        tuple: (signature, docstring)
+
+    """
     match = re.match(r"([\w\.]+)\((.*)\)", syn)
     if match:
         sig = match[2]
@@ -63,7 +80,7 @@ def create_deck(path, allow_special=False, allow_private=False, short=True, shuf
     """
     Create a "flashcard deck" of the target class or module's routines.
 
-    Constructs an ordered mapping of routine names to docstrings for the target
+    Construct an ordered mapping of routine names to docstrings for the target
     class or module at `path`. Each routine name is complete with the routine's
     signature.
 
