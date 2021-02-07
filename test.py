@@ -9,7 +9,7 @@ win_unicode_console.streams.enable()
 util.setup_root_logger()
 logger = logging.getLogger(__name__)
 
-parser = argparse.ArgumentParser(description="Run test of lib-learn.")
+parser = argparse.ArgumentParser(description="Run tests of lib-learn.")
 parser.add_argument("--path", help="path of target class or module", default=None)
 parser.add_argument("--file", help="text file listing targets", default=None)
 parser.add_argument("-f", "--full", help="show full-length docstrings", action="store_true")
