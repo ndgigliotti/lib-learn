@@ -46,6 +46,21 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd> until 
 | `-pr`, `--private`  | Allow `_private` routines.     |
 | `-sp`, `--special`  | Allow `__special__` routines.  |
 
+## Known Issues
+
+- Cannot obtain signatures for some routines using `inspect.signature`.
+  - Unresolved: which ones exactly and why?
+  - Fallback works on `numpy.ndarray` class. Does it work on anything else?
+- Does not work on `itertools` module. Why?
+
+## Todo
+- [x] Cycle feature
+- [ ] Add commands to get further details
+- [ ] Add navigation commands
+- [ ] Investigate known issues
+- [ ] Complete docstrings
+- [ ] Allow class flashcards
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
