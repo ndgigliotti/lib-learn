@@ -1,6 +1,8 @@
 # lib-learn
 
-A CLI flashcard simulator for learning the routines of Python libraries. Useful for exploring new libraries or delving deeper into familiar ones.
+A CLI flashcard simulator for learning the routines of Python libraries.
+
+Explore a new library or delve into a familiar one. Discover functions you never knew existed.
 
 ## Usage
 Run the script with the target class or module as the sole positional argument. You must provide the dotted path, like those used in `import` statements.
