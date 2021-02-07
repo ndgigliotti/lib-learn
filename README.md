@@ -1,6 +1,6 @@
 # lib-learn
 
-A CLI flashcard simulator for learning the routines of Python libraries.
+A CLI flashcard simulator for learning the functions of Python libraries.
 
 Explore a new library or delve into a familiar one. Discover functions you never knew existed.
 
