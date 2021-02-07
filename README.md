@@ -50,9 +50,6 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 
 - Cannot obtain signatures for some routines using `inspect.signature`.
   - Unresolved: which ones exactly and why?
-  - How robust is the fallback?
-    - How broadly does it apply?
-    - How consistent is it on a single target?
 - Does not work on `itertools` module. Why?
 
 ## Todo
