@@ -22,13 +22,4 @@ cards = flashcards.create_deck(args.path,
                                allow_special=args.special,
                                short=not args.full,
                                shuffle=args.shuffle)
-
-names = cards.keys()
-if args.cycle:
-    names = util.cycle(names, shuffle_bet=args.shuffle)
-
-for name in names:
-    print("\n"*3)
-    input(name)
-    print("-"*len(name))
-    input(cards[name])
+flashcards.prompt_cards(cards, cycle=args.cycle, shuffle=args.shuffle)
