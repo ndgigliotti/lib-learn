@@ -41,7 +41,8 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd> until 
 | ------------------- | ------------------------------ |
 | `-h`, `--help`      | Show help message and exit.    |
 | `-f`, `--full`      | Show full-length docstrings.   |
-| `-s`, `--shuffle`   | Shuffle the flashcard deck.    |
+| `-c`, `--cycle`     | Cycle the deck indefinitely.   |
+| `-s`, `--shuffle`   | Shuffle the deck.              |
 | `-pr`, `--private`  | Allow `_private` routines.     |
 | `-sp`, `--special`  | Allow `__special__` routines.  |
 

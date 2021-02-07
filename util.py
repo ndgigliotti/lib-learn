@@ -1,6 +1,7 @@
 import os
-import logging
 import sys
+import logging
+import random
 import datetime
 from definitions import DATE_FORMAT, DATETIME_FORMAT, LOG_FORMAT, LOG_DIR
 
@@ -60,3 +61,30 @@ def now_name(ext=None):
 
 def today_name(ext=None):
     return date_to_name(datetime.date.today(), ext=ext)
+
+
+def cycle(iterable, shuffle_bet=False):
+    """
+    Cycle through an iterable indefinitely, optionally shuffling between each cycle.
+
+    Make an iterator returning elements from the iterable and saving a copy of each.
+    When the iterable is exhausted, shuffle (optionally) and return elements
+    from the saved copy. Repeats indefinitely.
+
+    Args:
+        iterable: Iterable to cycle through.
+        shuffle_bet (optional): Shuffle between each cycle. False by default.
+
+    Yields:
+        object: The next element in the cycle.
+
+        """
+    saved = []
+    for element in iterable:
+        yield element
+        saved.append(element)
+    while saved:
+        if shuffle_bet:
+            random.shuffle(saved)
+        for element in saved:
+            yield element
