@@ -54,7 +54,7 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd> until 
 - Does not work on `itertools` module. Why?
 
 ## Todo
-- [x] Cycle feature
+- [x] Add cycle feature
 - [ ] Add commands to get further details on routines
 - [ ] Investigate known issues
 - [ ] Complete docstrings
