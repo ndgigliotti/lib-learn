@@ -60,6 +60,7 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd> until 
 - [ ] Investigate known issues
 - [ ] Complete docstrings
 - [ ] Allow class flashcards
+- [ ] Develop mass-library test
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
