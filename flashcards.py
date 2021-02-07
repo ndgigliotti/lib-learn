@@ -11,10 +11,8 @@ import util
 logger = logging.getLogger(__name__)
 
 
-def get_path(obj):
-    if hasattr(obj, "__module__"):
-        return f"{obj.__module__}.{obj.__name__}"
-    return obj.__name__
+def get_path(parent, child):
+    return f"{parent.__name__}.{child.__name__}"
 
 
 def _sig_fallback(obj, parent, syn, rem, short=True):
@@ -35,7 +33,7 @@ def _sig_fallback(obj, parent, syn, rem, short=True):
         tuple: (signature, docstring)
 
     """
-    path = get_path(obj)
+    path = get_path(parent, obj)
     match = re.match(r"([\w\.]+)\((.*)\)", syn)
     if match:
         sig = match[2]
@@ -75,7 +73,7 @@ def get_doc(obj, parent, short=True):
     """
     doc = pydoc.getdoc(obj)
     syn, rem = pydoc.splitdoc(doc)
-    path = get_path(obj)
+    path = get_path(parent, obj)
     try:
         sig = inspect.signature(obj)
         logger.debug("Found signature for `%s` using inspect.", path)
