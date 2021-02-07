@@ -55,7 +55,7 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd> until 
 
 ## Todo
 - [x] Cycle feature
-- [ ] Add commands to get further details on routine
+- [ ] Add commands to get further details on routines
 - [ ] Investigate known issues
 - [ ] Complete docstrings
 - [ ] Allow class flashcards
