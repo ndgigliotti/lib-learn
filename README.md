@@ -57,12 +57,13 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 
 ## Todo
 - [x] Add cycle feature
+- [x] Develop broad library sweep
+- [ ] Develop log analysis tools
 - [ ] Add commands to get further details on routines
 - [ ] Add quit command
 - [ ] Investigate known issues
 - [ ] Complete docstrings
-- [ ] Allow class flashcards
-- [ ] Develop broad library sweep
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
