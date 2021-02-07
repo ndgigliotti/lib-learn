@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(description="Learn the routines of a class or m
 parser.add_argument("path")
 parser.add_argument("-f", "--full", help="show full-length docstrings", action="store_true")
 parser.add_argument("-c", "--cycle",  help="cycle the deck indefinitely", action="store_true")
-parser.add_argument("-s", "--shuffle",  help="shuffle the deck", action="store_true")
+parser.add_argument("-s", "--shuffle",  help="keep the deck shuffled", action="store_true")
 parser.add_argument("-pr", "--private", help="allow private routines", action="store_true")
 parser.add_argument("-sp", "--special", help="allow special routines", action="store_true")
 args = parser.parse_args()
