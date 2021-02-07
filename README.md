@@ -62,7 +62,7 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 - [ ] Investigate known issues
 - [ ] Complete docstrings
 - [ ] Allow class flashcards
-- [ ] Develop broad library sweep test
+- [ ] Develop broad library sweep
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
