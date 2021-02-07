@@ -33,7 +33,7 @@ Press <kbd>Enter</kbd> again to proceed to the next card.
 pandas.DataFrame.add(self, other, axis='columns', level=None, fill_value=None)_
 ```
 
-You can continue iterating through the cards by pressing <kbd>Enter</kbd> until you reach the end of the deck.
+You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 
 ## Optional Flags
 
@@ -56,6 +56,7 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd> until 
 ## Todo
 - [x] Add cycle feature
 - [ ] Add commands to get further details on routines
+- [ ] Add quit command
 - [ ] Investigate known issues
 - [ ] Complete docstrings
 - [ ] Allow class flashcards
