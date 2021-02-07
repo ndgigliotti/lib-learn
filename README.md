@@ -35,7 +35,7 @@ pandas.DataFrame.add(self, other, axis='columns', level=None, fill_value=None)_
 
 You can continue iterating through the cards by pressing <kbd>Enter</kbd> until you reach the end of the deck.
 
-### Optional Flags
+## Optional Flags
 
 |        Flag         |             Effect             |
 | ------------------- | ------------------------------ |
