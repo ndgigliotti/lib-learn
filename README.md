@@ -50,7 +50,9 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 
 - Cannot obtain signatures for some routines using `inspect.signature`.
   - Unresolved: which ones exactly and why?
-  - Fallback works on `numpy.ndarray` class. Does it work on anything else?
+  - How robust is the fallback?
+    - How broadly does it apply?
+    - How consistent is it on a single target?
 - Does not work on `itertools` module. Why?
 
 ## Todo
@@ -60,7 +62,7 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 - [ ] Investigate known issues
 - [ ] Complete docstrings
 - [ ] Allow class flashcards
-- [ ] Develop mass-library test
+- [ ] Develop broad library sweep
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
