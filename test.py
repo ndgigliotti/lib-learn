@@ -1,6 +1,7 @@
 import sys
 import logging
 import argparse
+from collections import OrderedDict
 import win_unicode_console
 import util
 import flashcards
@@ -28,6 +29,7 @@ elif args.file is not None:
 else:
     paths = sys.builtin_module_names
 
+results = dict()
 for path in paths:
     try:
         deck, quality = flashcards.create_deck(path,
@@ -39,3 +41,11 @@ for path in paths:
         logger.error(e)
         continue
     flashcards.log_deck(path, deck, quality)
+    results[path] = quality
+
+results = OrderedDict(sorted(results.items(), key=lambda x: x[1]))
+logger.info("\n")
+logger.info("Results")
+logger.info("-------")
+for path in results:
+    logger.info("%s: %.2f", path, round(results[path], 2))
