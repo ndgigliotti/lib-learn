@@ -1,10 +1,10 @@
-import sys
 import logging
 import argparse
 from collections import OrderedDict
 import win_unicode_console
 import util
 import flashcards
+from definitions import STDLIB
 
 win_unicode_console.streams.enable()
 util.setup_root_logger()
@@ -27,7 +27,7 @@ elif args.file is not None:
         paths = f.read().split("\n")
         paths = list(filter(None, paths))
 else:
-    paths = sys.builtin_module_names
+    paths = STDLIB
 
 results = dict()
 for path in paths:
@@ -38,6 +38,7 @@ for path in paths:
                                                short=not args.full)
     except Exception as e:
         logger.error(e)
+        results[path] = -100
         continue
     flashcards.log_deck(path, deck, quality)
     results[path] = quality
