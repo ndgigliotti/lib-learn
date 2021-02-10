@@ -30,12 +30,12 @@ else:
 
 for path in paths:
     try:
-        deck = flashcards.create_deck(path,
-                                      allow_private=args.private,
-                                      allow_special=args.special,
-                                      short=not args.full,
-                                      shuffle=False)
+        deck, quality = flashcards.create_deck(path,
+                                               allow_private=args.private,
+                                               allow_special=args.special,
+                                               short=not args.full,
+                                               shuffle=False)
     except Exception as e:
         logger.error(e)
         continue
-    flashcards.log_deck(path, deck)
+    flashcards.log_deck(path, deck, quality)

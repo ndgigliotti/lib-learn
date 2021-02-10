@@ -17,9 +17,10 @@ parser.add_argument("-pr", "--private", help="allow private routines", action="s
 parser.add_argument("-sp", "--special", help="allow special routines", action="store_true")
 args = parser.parse_args()
 
-cards = flashcards.create_deck(args.path,
-                               allow_private=args.private,
-                               allow_special=args.special,
-                               short=not args.full,
-                               shuffle=args.shuffle)
+cards, _ = flashcards.create_deck(args.path,
+                                  allow_private=args.private,
+                                  allow_special=args.special,
+                                  short=not args.full,
+                                  shuffle=args.shuffle)
+
 flashcards.prompt_cards(cards, cycle=args.cycle, shuffle=args.shuffle)

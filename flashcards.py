@@ -12,28 +12,27 @@ logger = logging.getLogger(__name__)
 
 
 def get_path(parent, child):
+    """Return the dotted path of `child` relative to its parent class or module."""
     return f"{parent.__name__}.{child.__name__}"
 
 
-def _sig_fallback(obj, parent, syn, rem, short=True):
+def _sig_fallback(obj, parent, doc):
     """
     Look for the signature in the synopsis line.
 
     Check if the synopsis line is a signature and extract it if so. Ensure that
     the extracted signature has the `self` parameter if `parent` is a class.
-    Retrieve a new synopsis line from the remaining docstring if appropriate.
 
     Args:
-        obj (routine): The routine in need of a signature.
+        obj (routine): Routine in need of signature.
         parent (class): Parent class or module of `obj`.
-        syn (str): Synopsis line of the `obj` docstring.
-        rem (str): Remainder of the `obj` docstring.
-        short (:obj:`bool`, optional): Just get the synopsis line. True by default.
+        doc (str): Docstring of `obj`.
     Returns:
         tuple: (signature, docstring)
 
     """
     path = get_path(parent, obj)
+    syn, rem = pydoc.splitdoc(doc)
     match = re.match(r"([\w\.]+)\((.*)\)", syn)
     if match:
         sig = match[2]
@@ -43,45 +42,49 @@ def _sig_fallback(obj, parent, syn, rem, short=True):
             elif not sig.startswith("self"):
                 sig = "self"
         sig = f"({sig})"
-        if short:
-            syn2, _ = pydoc.splitdoc(rem)
-            results = (sig, syn2)
-        else:
-            results = (sig, rem)
+        results = (sig, rem)
         logger.debug("Found signature for `%s` using fallback.", path)
     else:
-        if short:
-            results = (None, syn)
-        else:
-            results = (None, "\n".join((syn, rem)))
+        results = ("(...)", "\n".join((syn, rem)))
         logger.debug("Could not find signature for `%s`.", path)
     return results
 
 
-def get_doc(obj, parent, short=True):
+def get_doc(obj, parent):
     """
     Get the signature and docstring of the given object.
 
     Args:
         obj (routine): Function, method, methoddescriptor, or builtin.
         parent (class): Parent class or module of `obj`.
-        short (:obj:`bool`, optional): Just get the synopsis line. True by default.
 
     Returns:
         tuple: (signature, docstring)
 
     """
     doc = pydoc.getdoc(obj)
-    syn, rem = pydoc.splitdoc(doc)
     path = get_path(parent, obj)
     try:
         sig = inspect.signature(obj)
+        results = (sig, doc)
         logger.debug("Found signature for `%s` using inspect.", path)
     except ValueError:
-        return _sig_fallback(obj, parent, syn, rem, short=short)
-    if short:
-        return (sig, syn)
-    return (sig, doc)
+        results = _sig_fallback(obj, parent, doc)
+    if not doc:
+        logger.debug("Could not find docstring for `%s`.", path)
+    return results
+
+
+def try_shorten(doc):
+    """Return the synopsis line if available, otherwise `doc`."""
+    syn, _ = pydoc.splitdoc(doc)
+    if syn:
+        return syn
+    logger.debug("\n")
+    logger.debug("Could not shorten docstring:")
+    logger.debug(repr(doc))
+    logger.debug("\n")
+    return doc
 
 
 def create_deck(path, allow_special=False, allow_private=False, short=True, shuffle=False):
@@ -96,11 +99,11 @@ def create_deck(path, allow_special=False, allow_private=False, short=True, shuf
         obj (str): Dotted path to class or module.
         allow_special (:obj:`bool`, optional): Allow __special__ routines. False by default.
         allow_private (:obj:`bool`, optional): Allow _private routines. False by default.
-        short (:obj:`bool`, optional): Just get the synopsis line. True by default.
+        short (:obj:`bool`, optional): Try to get only the synopsis line. True by default.
         shuffle(:obj:`bool`, optional): Shuffle the deck.
 
     Returns:
-        OrderedDict: An ordered mapping of routine names to docstrings.
+        tuple: (cards, quality)
 
     Raises:
         TypeError: If `path` resolves to anything other than a class or module.
@@ -121,16 +124,15 @@ def create_deck(path, allow_special=False, allow_private=False, short=True, shuf
                 not allow_private and is_private(func),
                 is_deprecated(func))):
             continue
-        sig, doc = get_doc(func, obj, short=short)
+        sig, doc = get_doc(func, obj)
         n_eligible += 1
-        if sig and doc:
-            cards[f"{path}.{name}{sig}"] = doc
-        elif not doc:
-            logger.debug("Could not find docstring for `%s.%s`.", path, name)
+        if doc:
+            cards[f"{path}.{name}{sig}"] = try_shorten(doc) if short else doc
     logger.debug("Finished looking for documentation.")
-    logger.debug("Found documentation for %i / %i eligible routines.",
-                 len(cards), n_eligible)
-    return cards
+    quality = (len(cards) / n_eligible) * 100
+    logger.debug("Found documentation for %i / %i (%i%%) eligible routines.",
+                 len(cards), n_eligible, round(quality))
+    return cards, quality
 
 
 def prompt_cards(cards, cycle=False, shuffle=False):
@@ -145,8 +147,9 @@ def prompt_cards(cards, cycle=False, shuffle=False):
         input(cards[name])
 
 
-def log_deck(path, deck):
+def log_deck(path, deck, quality):
     logger.debug("\n")
-    logger.debug("Deck: `%s` Length: %i", path, len(deck))
+    logger.debug("Deck: `%s`, Length: %i, Quality: %.2f%%",
+                 path, len(deck), round(quality, 2))
     logger.debug(json.dumps(deck))
     logger.debug("\n")
