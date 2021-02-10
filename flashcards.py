@@ -83,7 +83,7 @@ def shorten(doc):
     return doc.split("\n\n")[0]
 
 
-def create_deck(path, allow_special=False, allow_private=False, short=True, shuffle=False):
+def create_deck(path, allow_special=False, allow_private=False, short=True):
     """
     Create a "flashcard deck" of the target class or module's routines.
 
@@ -96,7 +96,6 @@ def create_deck(path, allow_special=False, allow_private=False, short=True, shuf
         allow_special (:obj:`bool`, optional): Allow __special__ routines. False by default.
         allow_private (:obj:`bool`, optional): Allow _private routines. False by default.
         short (:obj:`bool`, optional): Try to get only the synopsis line. True by default.
-        shuffle(:obj:`bool`, optional): Shuffle the deck.
 
     Returns:
         tuple: (cards, quality)
@@ -114,8 +113,6 @@ def create_deck(path, allow_special=False, allow_private=False, short=True, shuf
     functions = inspect.getmembers(obj, inspect.isroutine)
     # classes = inspect.getmembers(obj, inspect.isclass)
     # functions += classes
-    if shuffle:
-        random.shuffle(functions)
     n_eligible = 0
     for name, func in functions:
         if any((not allow_special and is_special(func),
@@ -134,7 +131,9 @@ def create_deck(path, allow_special=False, allow_private=False, short=True, shuf
 
 
 def prompt_cards(cards, cycle=False, shuffle=False, dash_cut=100):
-    names = cards.keys()
+    names = list(cards.keys())
+    if shuffle:
+        random.shuffle(names)
     if cycle:
         names = util.cycle(names, shuffle_bet=shuffle)
 

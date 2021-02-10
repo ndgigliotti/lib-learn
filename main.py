@@ -20,7 +20,6 @@ args = parser.parse_args()
 cards, _ = flashcards.create_deck(args.path,
                                   allow_private=args.private,
                                   allow_special=args.special,
-                                  short=not args.full,
-                                  shuffle=args.shuffle)
+                                  short=not args.full)
 
 flashcards.prompt_cards(cards, cycle=args.cycle, shuffle=args.shuffle)
