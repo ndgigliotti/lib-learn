@@ -46,7 +46,8 @@ def _sig_fallback(obj, parent, doc):
         results = (sig, rem)
         logger.debug("Found signature for `%s` using fallback.", path)
     else:
-        results = ("(...)", "\n".join((syn, rem)))
+        doc = "\n".join((syn, rem)).strip(WHITESPACE)
+        results = ("(...)", doc)
         logger.debug("Could not find signature for `%s`.", path)
     return results
 
@@ -76,17 +77,10 @@ def get_doc(obj, parent):
     return results
 
 
-def try_shorten(doc):
-    """Return the synopsis line if available, otherwise `doc`."""
+def shorten(doc):
+    """Return the first chunk of `doc`."""
     doc = doc.strip(WHITESPACE)
-    syn, _ = pydoc.splitdoc(doc)
-    if syn:
-        return syn
-    logger.debug("\n")
-    logger.debug("Could not shorten docstring:")
-    logger.debug(repr(doc))
-    logger.debug("\n")
-    return doc
+    return doc.split("\n\n")[0]
 
 
 def create_deck(path, allow_special=False, allow_private=False, short=True, shuffle=False):
@@ -131,7 +125,7 @@ def create_deck(path, allow_special=False, allow_private=False, short=True, shuf
         sig, doc = get_doc(func, obj)
         n_eligible += 1
         if doc:
-            cards[f"{path}.{name}{sig}"] = try_shorten(doc) if short else doc
+            cards[f"{path}.{name}{sig}"] = shorten(doc) if short else doc
     logger.debug("Finished looking for documentation.")
     quality = (len(cards) / n_eligible) * 100
     logger.debug("Found documentation for %i / %i (%i%%) eligible routines.",
@@ -139,7 +133,7 @@ def create_deck(path, allow_special=False, allow_private=False, short=True, shuf
     return cards, quality
 
 
-def prompt_cards(cards, cycle=False, shuffle=False):
+def prompt_cards(cards, cycle=False, shuffle=False, dash_cut=100):
     names = cards.keys()
     if cycle:
         names = util.cycle(names, shuffle_bet=shuffle)
@@ -147,7 +141,12 @@ def prompt_cards(cards, cycle=False, shuffle=False):
     for name in names:
         print("\n"*3)
         input(name)
-        print("-"*len(name))
+        if len(name) <= dash_cut:
+            print("-"*len(name))
+        elif len(cards[name]) <= dash_cut:
+            print("-"*len(cards[name]))
+        else:
+            print("-"*dash_cut)
         pydoc.ttypager(cards[name])
         input()
 
