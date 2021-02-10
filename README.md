@@ -22,7 +22,8 @@ Press <kbd>Enter</kbd> to view the back of the card.
 ```
 pandas.DataFrame.abs(self:~FrameOrSeries) -> ~FrameOrSeries
 -----------------------------------------------------------
-Return a Series/DataFrame with absolute numeric value of each element._
+Return a Series/DataFrame with absolute numeric value of each element.
+_
 ```
 
 >By default, the back contains the synopsis line of the routine's docstring. For some libraries&mdash;especially those with unorthodox docstring formatting&mdash;this may not be useful. Use `-f` to show full docstrings.

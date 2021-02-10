@@ -148,12 +148,8 @@ def prompt_cards(cards, cycle=False, shuffle=False):
         print("\n"*3)
         input(name)
         print("-"*len(name))
-        lines = cards[name].split("\n")
-        if len(lines) > 1:
-            pydoc.ttypager(cards[name])
-            input()
-        else:
-            input(cards[name])
+        pydoc.ttypager(cards[name])
+        input()
 
 
 def log_deck(path, deck, quality):
