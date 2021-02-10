@@ -118,8 +118,8 @@ def create_deck(path, allow_special=False, allow_private=False, short=True, shuf
     if not (inspect.isclass(obj) or inspect.ismodule(obj)):
         raise TypeError("target must be class or module")
     functions = inspect.getmembers(obj, inspect.isroutine)
-    classes = inspect.getmembers(obj, inspect.isclass)
-    functions += classes
+    # classes = inspect.getmembers(obj, inspect.isclass)
+    # functions += classes
     if shuffle:
         random.shuffle(functions)
     n_eligible = 0
