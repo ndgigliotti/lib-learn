@@ -50,8 +50,9 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 ## Known Issues
 
 - Cannot obtain signatures for some routines using `inspect.signature`.
-  - Unresolved: which ones exactly and why?
-- Does not work on `itertools` module. Why?
+  - Which ones exactly and why?
+- Does not work on `itertools` module.
+  - Apparent functions are actually classes.
 
 ## Todo
 - [x] Add cycle feature
