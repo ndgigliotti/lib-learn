@@ -8,6 +8,7 @@ from collections import OrderedDict
 from type_checking import is_special, is_private, is_deprecated
 import util
 
+WHITESPACE = " \t\n\r\f\v"
 logger = logging.getLogger(__name__)
 
 
@@ -62,7 +63,7 @@ def get_doc(obj, parent):
         tuple: (signature, docstring)
 
     """
-    doc = pydoc.getdoc(obj)
+    doc = pydoc.getdoc(obj).strip(WHITESPACE)
     path = get_path(parent, obj)
     try:
         sig = inspect.signature(obj)
@@ -77,6 +78,7 @@ def get_doc(obj, parent):
 
 def try_shorten(doc):
     """Return the synopsis line if available, otherwise `doc`."""
+    doc = doc.strip(WHITESPACE)
     syn, _ = pydoc.splitdoc(doc)
     if syn:
         return syn
@@ -116,6 +118,8 @@ def create_deck(path, allow_special=False, allow_private=False, short=True, shuf
     if not (inspect.isclass(obj) or inspect.ismodule(obj)):
         raise TypeError("target must be class or module")
     functions = inspect.getmembers(obj, inspect.isroutine)
+    classes = inspect.getmembers(obj, inspect.isclass)
+    functions += classes
     if shuffle:
         random.shuffle(functions)
     n_eligible = 0
