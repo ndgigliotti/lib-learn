@@ -67,5 +67,7 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+Please be sure to update the test.
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
