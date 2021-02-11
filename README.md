@@ -5,7 +5,7 @@ A CLI flashcard simulator for learning the functions of Python libraries.
 Explore a new library or delve into a familiar one. Discover functions you never knew existed.
 
 ## Usage
-Run the script with the target class or module as the sole positional argument. You must provide the dotted path, like those used in `import` statements.
+Run the program with the target class or module as the sole positional argument. You must provide the dotted path, like those used in `import` statements.
 
 ```shell
 python main.py pandas.DataFrame
