@@ -44,8 +44,8 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 | `-f`, `--full`      | Show full-length docstrings.   |
 | `-c`, `--cycle`     | Cycle the deck indefinitely.   |
 | `-s`, `--shuffle`   | Keep the deck shuffled.        |
-| `-pr`, `--private`  | Allow `_private` routines.     |
-| `-sp`, `--special`  | Allow `__special__` routines.  |
+| `-p`, `--private`   | Allow `_private` routines.     |
+| `-m`, `--special`   | Allow `__special__` routines.  |
 
 ## Known Issues
 
