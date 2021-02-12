@@ -1,5 +1,4 @@
 # lib-learn
-
 A CLI flashcard simulator for learning the functions of Python libraries.
 
 Explore a new library or delve into a familiar one. Discover functions you never knew existed.
@@ -37,7 +36,6 @@ pandas.DataFrame.add(self, other, axis='columns', level=None, fill_value=None)_
 You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 
 ## Optional Flags
-
 |        Flag         |             Effect             |
 | ------------------- | ------------------------------ |
 | `-h`, `--help`      | Show help message and exit.    |
@@ -48,7 +46,6 @@ You can continue iterating through the cards by pressing <kbd>Enter</kbd>.
 | `-m`, `--special`   | Allow `__special__` routines.  |
 
 ## Known Issues
-
 - Cannot obtain signatures for some routines using `inspect.signature`.
   - Which ones exactly and why?
 - Does not work on `itertools` module.
