@@ -85,6 +85,12 @@ Examples:
         action="store_true",
         help="Use heuristics only (no LLM calls)",
     )
+    learn.add_argument(
+        "--install",
+        "-i",
+        action="store_true",
+        help="Auto-install missing libraries in isolated environment",
+    )
 
     # Flashcards command (legacy mode)
     flash = subparsers.add_parser(
@@ -139,6 +145,25 @@ Examples:
         help="Show current configuration",
     )
 
+    # Envs command (manage cached library environments)
+    envs_cmd = subparsers.add_parser(
+        "envs",
+        help="Manage cached library environments",
+    )
+    envs_cmd.add_argument(
+        "--list",
+        "-l",
+        action="store_true",
+        help="List cached environments",
+    )
+    envs_cmd.add_argument(
+        "--clean",
+        metavar="LIBRARY",
+        nargs="?",
+        const="__all__",
+        help="Remove cached environment (or all if no library specified)",
+    )
+
     return parser
 
 
@@ -174,12 +199,18 @@ def cmd_learn(args):
 
     # Start session
     try:
-        manager = SessionManager(config)
+        manager = SessionManager(config, auto_install=args.install)
         manager.start_session(args.library)
         manager.interact()
+    except RuntimeError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
     except ImportError as e:
         print(f"Error: Could not import library '{args.library}'")
         print(f"Details: {e}")
+        print(
+            "\nTip: Use --install to automatically install in an isolated environment."
+        )
         sys.exit(1)
     except KeyboardInterrupt:
         print("\nSession interrupted.")
@@ -236,6 +267,31 @@ def cmd_config(args):
         print("Use --init to create a config file or --show to display current config.")
 
 
+def cmd_envs(args):
+    """Handle environment management commands."""
+    from execution.environment import LibraryEnvironment
+
+    env = LibraryEnvironment()
+
+    if args.list:
+        cached = env.list_cached()
+        if cached:
+            print("Cached library environments:")
+            for name in cached:
+                print(f"  - {name}")
+        else:
+            print("No cached environments.")
+
+    elif args.clean:
+        if args.clean == "__all__":
+            env.cleanup()
+        else:
+            env.cleanup(args.clean)
+
+    else:
+        print("Use --list to show cached environments or --clean to remove them.")
+
+
 def main():
     """Main entry point."""
     parser = build_parser()
@@ -247,6 +303,8 @@ def main():
         cmd_flashcards(args)
     elif args.command == "config":
         cmd_config(args)
+    elif args.command == "envs":
+        cmd_envs(args)
     else:
         # No command specified - show help
         parser.print_help()

@@ -97,15 +97,21 @@ class CodeSandbox:
     - Output capture
     """
 
-    def __init__(self, config: SandboxConfig):
+    def __init__(self, config: SandboxConfig, python_executable: Optional[str] = None):
         """
         Initialize the sandbox.
 
         Args:
             config: Sandbox configuration
+            python_executable: Path to Python interpreter to use (defaults to current)
         """
         self.config = config
         self._library_imports: List[str] = []
+        self._python_executable = python_executable or sys.executable
+
+    def set_python_executable(self, path: str):
+        """Set the Python executable to use for sandbox execution."""
+        self._python_executable = path
 
     def set_library(self, library_path: str):
         """
@@ -174,7 +180,7 @@ class CodeSandbox:
             try:
                 # Execute in subprocess
                 result = subprocess.run(
-                    [sys.executable, script_path],
+                    [self._python_executable, script_path],
                     capture_output=True,
                     text=True,
                     timeout=timeout,

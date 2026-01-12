@@ -10,6 +10,7 @@ from introspection.analyzer import LibraryAnalyzer
 from questions.generator import QuestionOrchestrator
 from execution.sandbox import CodeSandbox
 from execution.validator import AnswerValidator, ValidationResult
+from execution.environment import LibraryEnvironment
 from session.state import SessionState, SessionMode
 
 logger = logging.getLogger(__name__)
@@ -23,17 +24,20 @@ class SessionManager:
     code execution, and the REPL.
     """
 
-    def __init__(self, config: AppConfig):
+    def __init__(self, config: AppConfig, auto_install: bool = False):
         """
         Initialize the session manager.
 
         Args:
             config: Application configuration
+            auto_install: If True, install missing libraries without prompting
         """
         self.config = config
+        self.auto_install = auto_install
         self.state: Optional[SessionState] = None
 
         # Initialize components
+        self.environment = LibraryEnvironment()
         self.sandbox = CodeSandbox(config.sandbox)
         self.agent = BaseAgent(config.llm)
         self.explorer = ExplorerAgent(config.llm)
@@ -56,8 +60,15 @@ class SessionManager:
         # Create session state
         self.state = SessionState(library_path=library_path)
 
+        # Ensure library is available (install in isolated env if needed)
+        python_executable = self.environment.ensure_available(
+            library_path,
+            auto_install=self.auto_install,
+        )
+
         # Configure sandbox for this library
         self.sandbox.set_library(library_path)
+        self.sandbox.set_python_executable(python_executable)
 
         # Analyze the library
         print(f"Analyzing {library_path}...")
