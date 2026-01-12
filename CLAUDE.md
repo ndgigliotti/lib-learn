@@ -27,6 +27,14 @@ python main.py config --init    # Create ~/.lib-learn/config.toml
 python main.py config --show    # Show current configuration
 ```
 
+### Environment Management
+```bash
+python main.py learn requests -i        # Auto-install in isolated venv
+python main.py envs --list              # List cached library environments
+python main.py envs --clean             # Remove all cached environments
+python main.py envs --clean pandas      # Remove specific environment
+```
+
 ### Session Commands
 During a learning session:
 - `/hint` - Get a hint for the current question
@@ -59,7 +67,8 @@ lib-learn/
 │   └── types/           # 4 question type generators
 ├── execution/           # Code execution
 │   ├── sandbox.py       # Sandboxed subprocess execution
-│   └── validator.py     # Answer validation
+│   ├── validator.py     # Answer validation
+│   └── environment.py   # Isolated venv management (~/.lib-learn/envs/)
 ├── session/             # Session management
 │   ├── state.py         # SessionState dataclass
 │   ├── manager.py       # SessionManager
@@ -100,3 +109,4 @@ Key environment variables:
 - Cannot obtain signatures for some routines where `inspect.signature()` fails
 - Does not work on `itertools` module (apparent functions are actually classes)
 - Sandbox restrictions prevent some library features from working
+- **TODO: Analyzer doesn't work with isolated venvs** - The `LibraryAnalyzer` runs in the main process using `inspect` and `pydoc`, so it can only analyze libraries installed in the current environment. To fully support `--install` for libraries not in the current env, the analyzer needs to be refactored to run introspection via subprocess using the isolated venv's Python interpreter.
