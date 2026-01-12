@@ -6,7 +6,9 @@ import datetime
 from definitions import DATE_FORMAT, DATETIME_FORMAT, LOG_FORMAT, LOG_DIR
 
 
-def setup_root_logger(level=logging.DEBUG, format_=LOG_FORMAT, stream=sys.stdout, out_dir=LOG_DIR):
+def setup_root_logger(
+    level=logging.INFO, format_=LOG_FORMAT, stream=sys.stdout, out_dir=LOG_DIR
+):
     logger = logging.getLogger()
     logger.setLevel(level)
     console_handler = logging.StreamHandler(stream)
@@ -78,7 +80,7 @@ def cycle(iterable, shuffle_bet=False):
     Yields:
         object: The next element in the cycle.
 
-        """
+    """
     saved = []
     for element in iterable:
         yield element

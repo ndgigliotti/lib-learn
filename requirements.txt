@@ -1,1 +1,6 @@
-win_unicode_console == 0.5
+# Core dependencies
+litellm>=1.0.0           # Multi-provider LLM abstraction
+
+# Platform-specific (optional - Windows unicode console)
+# win_unicode_console is outdated; Python 3.6+ handles unicode natively
+# Only needed for very old Windows terminals

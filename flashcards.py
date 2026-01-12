@@ -115,9 +115,13 @@ def create_deck(path, allow_special=False, allow_private=False, short=True):
     # functions += classes
     n_eligible = 0
     for name, func in functions:
-        if any((not allow_special and is_special(func),
+        if any(
+            (
+                not allow_special and is_special(func),
                 not allow_private and is_private(func),
-                is_deprecated(func))):
+                is_deprecated(func),
+            )
+        ):
             continue
         sig, doc = get_doc(func, obj)
         n_eligible += 1
@@ -125,8 +129,12 @@ def create_deck(path, allow_special=False, allow_private=False, short=True):
             cards[f"{path}.{name}{sig}"] = shorten(doc) if short else doc
     logger.debug("Finished looking for documentation.")
     quality = (len(cards) / n_eligible) * 100
-    logger.debug("Found documentation for %i / %i (%i%%) eligible routines.",
-                 len(cards), n_eligible, round(quality))
+    logger.debug(
+        "Found documentation for %i / %i (%i%%) eligible routines.",
+        len(cards),
+        n_eligible,
+        round(quality),
+    )
     return cards, quality
 
 
@@ -138,21 +146,22 @@ def prompt_cards(cards, cycle=False, shuffle=False, dash_cut=100):
         names = util.cycle(names, shuffle_bet=shuffle)
 
     for name in names:
-        print("\n"*3)
+        print("\n" * 3)
         input(name)
         if len(name) <= dash_cut:
-            print("-"*len(name))
+            print("-" * len(name))
         elif len(cards[name]) <= dash_cut:
-            print("-"*len(cards[name]))
+            print("-" * len(cards[name]))
         else:
-            print("-"*dash_cut)
+            print("-" * dash_cut)
         pydoc.ttypager(cards[name])
         input()
 
 
 def log_deck(path, deck, quality):
     logger.debug("\n")
-    logger.debug("Deck: `%s`, Length: %i, Quality: %.2f%%",
-                 path, len(deck), round(quality, 2))
+    logger.debug(
+        "Deck: `%s`, Length: %i, Quality: %.2f%%", path, len(deck), round(quality, 2)
+    )
     logger.debug(json.dumps(deck))
     logger.debug("\n")

@@ -13,9 +13,15 @@ logger = logging.getLogger(__name__)
 parser = argparse.ArgumentParser(description="Run tests of lib-learn.")
 parser.add_argument("--path", help="path of target class or module", default=None)
 parser.add_argument("--file", help="text file listing targets", default=None)
-parser.add_argument("-f", "--full", help="show full-length docstrings", action="store_true")
-parser.add_argument("-pr", "--private", help="allow private routines", action="store_true")
-parser.add_argument("-sp", "--special", help="allow special routines", action="store_true")
+parser.add_argument(
+    "-f", "--full", help="show full-length docstrings", action="store_true"
+)
+parser.add_argument(
+    "-pr", "--private", help="allow private routines", action="store_true"
+)
+parser.add_argument(
+    "-sp", "--special", help="allow special routines", action="store_true"
+)
 args = parser.parse_args()
 
 paths = []
@@ -32,10 +38,12 @@ else:
 results = dict()
 for path in paths:
     try:
-        deck, quality = flashcards.create_deck(path,
-                                               allow_private=args.private,
-                                               allow_special=args.special,
-                                               short=not args.full)
+        deck, quality = flashcards.create_deck(
+            path,
+            allow_private=args.private,
+            allow_special=args.special,
+            short=not args.full,
+        )
     except Exception as e:
         logger.error(e)
         results[path] = -100
